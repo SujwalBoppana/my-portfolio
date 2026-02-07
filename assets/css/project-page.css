@@ -1,0 +1,239 @@
+:root {
+  --bg-main: #eef5ff;
+  --bg-alt: #f9fcff;
+  --card: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(15, 126, 168, 0.16);
+  --text-1: #132238;
+  --text-2: #405b76;
+  --accent: #0f7ea8;
+  --accent-strong: #0c5e7c;
+  --chip-bg: rgba(15, 126, 168, 0.1);
+  --shadow: 0 16px 34px rgba(19, 34, 56, 0.12);
+  --radius-lg: 18px;
+  --radius-md: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Source Sans 3", sans-serif;
+  color: var(--text-1);
+  background: transparent;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 7% 10%, rgba(120, 183, 220, 0.3), transparent 28%),
+    radial-gradient(circle at 92% 14%, rgba(255, 203, 133, 0.25), transparent 31%),
+    linear-gradient(135deg, var(--bg-main) 0%, var(--bg-alt) 55%, #f3fbff 100%);
+}
+
+.project-shell {
+  width: min(1040px, calc(100% - 32px));
+  margin: 26px auto 40px;
+}
+
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-family: "Sora", sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-nav a:hover {
+  color: #093f55;
+}
+
+.hero-card {
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+.project-tag {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: var(--chip-bg);
+  border: 1px solid var(--card-border);
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: "Sora", sans-serif;
+}
+
+.hero-card h1 {
+  margin: 12px 0 8px;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  line-height: 1.15;
+  color: #0f2c43;
+}
+
+.hero-card p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.content-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.detail-card {
+  border-radius: var(--radius-md);
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 24px rgba(19, 34, 56, 0.08);
+  padding: 20px;
+}
+
+.detail-card h2 {
+  margin: 0 0 12px;
+  font-family: "Sora", sans-serif;
+  color: #13344f;
+  font-size: 1.13rem;
+}
+
+.detail-card p {
+  margin: 0;
+  color: #425f7b;
+  line-height: 1.65;
+}
+
+.highlight-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.highlight-list li {
+  margin-bottom: 8px;
+  color: #405d78;
+  line-height: 1.5;
+}
+
+.highlight-list li:last-child {
+  margin-bottom: 0;
+}
+
+.tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.tech-chips span {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 6px 11px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #214c69;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.link-list a {
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 126, 168, 0.22);
+  text-decoration: none;
+  font-family: "Sora", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 9px 12px;
+  color: #11344f;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.link-list a:hover {
+  background: rgba(15, 126, 168, 0.12);
+  color: #0b4e68;
+}
+
+.link-note {
+  margin-top: 10px;
+  color: #5f7890;
+  font-size: 0.86rem;
+}
+
+.bottom-nav {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.bottom-nav a {
+  text-decoration: none;
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.bottom-nav a:hover {
+  color: #093f55;
+}
+
+@media (max-width: 900px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .project-shell {
+    width: min(1040px, calc(100% - 18px));
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  .hero-card,
+  .detail-card {
+    padding: 16px;
+  }
+
+  .bottom-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
