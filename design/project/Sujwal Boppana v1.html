@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sujwal Boppana — Java Backend Engineer</title>
+<meta name="description" content="Sujwal Boppana — Java backend engineer in Hyderabad. Spring Boot, microservices, AI integration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0A;
+  --bg-2:#101010;
+  --bg-3:#161616;
+  --line:#1c1c1c;
+  --line-2:#262626;
+  --ink:#ededed;
+  --ink-2:#b5b5af;
+  --ink-3:#7a7a72;
+  --ink-4:#454540;
+  --accent:#E07856;
+  --accent-soft:rgba(224,120,86,.08);
+  --lime:#C7F574;
+  --green:#6fdc8c;
+  --red:#ff6b6b;
+  --warn:#e8c46b;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --maxw:1240px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--accent);color:#0A0A0A}
+a{color:inherit}
+
+/* layout shell */
+.shell{display:grid;grid-template-columns:72px 1fr;min-height:100vh}
+.rail{border-right:1px solid var(--line);position:sticky;top:0;height:100vh;padding:22px 0;display:flex;flex-direction:column;align-items:center;gap:18px;background:var(--bg)}
+.mono-mark{width:34px;height:34px;display:grid;place-items:center;background:var(--accent);color:#0A0A0A;font-family:var(--mono);font-weight:600;font-size:13px;border-radius:3px;letter-spacing:.02em}
+.rail nav{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.rail nav a{font-family:var(--mono);font-size:10px;color:var(--ink-3);text-decoration:none;padding:7px 8px;border-radius:3px;transition:color .15s,background .15s;letter-spacing:.06em}
+.rail nav a:hover{color:var(--ink)}
+.rail nav a.is-active{color:var(--accent);background:var(--accent-soft)}
+.rail .foot{margin-top:auto;font-family:var(--mono);font-size:9px;color:var(--ink-4);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.24em}
+
+main{max-width:var(--maxw);width:100%;margin:0 auto;padding:0 64px}
+
+/* section primitives */
+section{padding:88px 0;border-bottom:1px solid var(--line);position:relative}
+section:last-of-type{border-bottom:none}
+.sec-label{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.2em;text-transform:uppercase;margin:0 0 32px;display:inline-block;position:relative}
+.sec-label .num{color:var(--accent);margin-right:4px}
+.sec-label::after{content:"";position:absolute;left:0;bottom:-7px;height:1px;width:0;background:var(--accent);transition:width .8s cubic-bezier(.2,.7,.2,1) .1s}
+section.in-view .sec-label::after{width:100%}
+
+/* HERO */
+.hero{padding:96px 0 72px;display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start;border-bottom:1px solid var(--line)}
+.hero .meta{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.18em;text-transform:uppercase;display:flex;gap:18px;align-items:center}
+.hero .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-4)}
+.hero h1{font-family:var(--sans);font-weight:600;font-size:clamp(36px,5vw,60px);line-height:1.04;letter-spacing:-.02em;margin:28px 0 18px;color:var(--ink)}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{color:var(--ink-2);max-width:34ch;font-size:17px;line-height:1.55}
+.hero .sub .mono{font-family:var(--mono);font-size:14px;color:var(--ink-3)}
+
+.status-row{display:flex;gap:14px;margin-top:32px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:.04em}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);position:relative;flex:none}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;background:var(--green);opacity:.5;animation:pulse 1.9s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.4);opacity:.55}100%{transform:scale(2.2);opacity:0}}
+.status-row a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2);transition:color .15s,border-color .15s}
+.status-row a:hover{color:var(--accent);border-color:var(--accent)}
+
+/* now panel */
+.now{margin-top:44px;border:1px solid var(--line-2);max-width:380px;font-family:var(--mono);font-size:11px;background:linear-gradient(180deg,#0e0e0e 0%,#0a0a0a 100%)}
+.now .head{padding:8px 14px;border-bottom:1px solid var(--line-2);color:var(--ink-3);letter-spacing:.16em;display:flex;justify-content:space-between;align-items:center}
+.now .head .live{display:flex;gap:6px;align-items:center;color:var(--green)}
+.now .head .live .b{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.9s ease-out infinite}
+.now .body{padding:10px 14px}
+.now .r{display:flex;justify-content:space-between;padding:3px 0;gap:12px}
+.now .k{color:var(--ink-3);letter-spacing:.1em}
+.now .v{color:var(--ink)}
+.now .v.ok{color:var(--green)}
+
+/* terminal */
+.term{background:#0d0d0d;border:1px solid var(--line-2);border-radius:6px;overflow:hidden;height:480px;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.02)}
+.term-head{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#141414;border-bottom:1px solid var(--line-2)}
+.term-dot{width:11px;height:11px;border-radius:50%;background:#2a2a2a}
+.term-title{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.term-body{flex:1;padding:16px 18px 18px;font-family:var(--mono);font-size:13px;line-height:1.65;color:#d8d8d3;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent}
+.term-body::-webkit-scrollbar{width:6px}
+.term-body::-webkit-scrollbar-thumb{background:#222}
+.term-body::-webkit-scrollbar-track{background:transparent}
+.term-line{white-space:pre-wrap;word-break:break-word;min-height:1.65em}
+.t-prompt{color:var(--accent);user-select:none}
+.t-user{color:#f0f0eb}
+.t-out{color:#b5b5af}
+.t-err{color:var(--red)}
+.t-ok{color:var(--green)}
+.t-dim{color:var(--ink-3)}
+.t-key{color:var(--lime)}
+.t-warn{color:var(--warn)}
+.caret{display:inline-block;width:7px;height:14px;background:var(--accent);vertical-align:-2px;margin-left:2px;animation:blink 1.05s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.t-input{background:transparent;border:0;outline:0;color:#f0f0eb;font:inherit;flex:1;caret-color:var(--accent);min-width:0}
+.t-inline{display:flex;align-items:center;gap:8px}
+
+/* mobile term fallback */
+.term-mobile{display:none;background:#0d0d0d;border:1px solid var(--line-2);border-radius:6px;padding:18px;font-family:var(--mono);font-size:12.5px;line-height:1.7}
+.term-mobile .t-prompt{color:var(--accent)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.about-body{grid-column:2 / 9}
+.about-body p{font-size:18px;line-height:1.65;color:var(--ink-2);margin:0 0 22px}
+.about-body p .ink{color:var(--ink)}
+.about-side{grid-column:10 / 13;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.about-side .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
+.about-side .row:last-child{border-bottom:none}
+.about-side .row .v{color:var(--ink-2)}
+
+/* METRICS dashboard */
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line-2)}
+.metric{padding:22px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}
+.metric:nth-child(3n){border-right:none}
+.metric:nth-last-child(-n+3){border-bottom:none}
+.metric .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.metric .num{font-family:var(--mono);font-size:38px;color:var(--ink);font-weight:500;letter-spacing:-.025em;line-height:1;font-variant-numeric:tabular-nums}
+.metric .num .unit{font-size:18px;color:var(--accent);margin-left:1px}
+.metric .num .pre{color:var(--ink-3);margin-right:2px}
+.metric .spark{height:30px;width:84px;flex:none;opacity:.85}
+.metric .label{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.16em;text-transform:uppercase;margin-top:14px}
+.metric .delta{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.06em;margin-top:5px;display:flex;gap:6px;align-items:center}
+.metric .delta.down{color:var(--green)}
+.metric .delta .arrow{font-size:9px}
+
+/* EXPERIENCE git log */
+.gitlog{font-family:var(--mono);font-size:13.5px;line-height:1.75}
+.commit{padding:20px 0 22px;border-top:1px dashed var(--line)}
+.commit:first-child{border-top:none;padding-top:0}
+.commit .hashline{color:var(--ink-3)}
+.commit .hash{color:var(--warn)}
+.commit .branch{color:var(--lime);margin-left:8px}
+.commit .branch .paren{color:var(--ink-3)}
+.commit .when{color:var(--ink-3);margin-left:10px}
+.commit .author{color:var(--ink-3);margin-top:4px}
+.commit .author .em{color:var(--ink-2)}
+.commit .subject{color:var(--ink);margin:14px 0 8px;padding-left:24px;font-weight:500}
+.commit .subject .scope{color:var(--accent)}
+.commit .body{padding-left:24px;margin-top:6px}
+.commit .b{color:var(--ink-2);padding:5px 0 5px 18px;position:relative;cursor:default;transition:color .2s,background .2s;border-radius:2px}
+.commit .b::before{content:"-";position:absolute;left:0;color:var(--ink-4)}
+.commit .b .detail{display:block;color:var(--ink-3);font-size:12px;max-height:0;opacity:0;overflow:hidden;transition:max-height .25s ease,opacity .2s ease,margin .25s ease;margin-top:0}
+.commit .b:hover{color:var(--ink);background:rgba(255,255,255,.015);padding-left:20px}
+.commit .b:hover::before{color:var(--accent)}
+.commit .b:hover .detail{max-height:60px;opacity:1;margin-top:4px}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px 56px}
+.cluster .cat{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.18em;text-transform:uppercase;margin:0 0 14px;display:flex;gap:10px;align-items:center}
+.cluster .cat .cnum{color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 10px;border:1px solid var(--line-2);color:var(--ink);border-radius:3px;transition:opacity .2s,border-color .2s,color .2s,background .2s;cursor:default;background:var(--bg-2);user-select:none;white-space:nowrap}
+.skills-grid.is-focusing .chip:not(.is-focus){opacity:.25}
+.skills-grid.is-focusing .chip.is-focus{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* EDUCATION */
+.edu{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.edu .line{display:grid;grid-template-columns:max-content max-content 1fr max-content;gap:6px 18px;align-items:baseline}
+.edu .line .yr{color:var(--ink-3);white-space:nowrap}
+.edu .line .deg{color:var(--ink);white-space:nowrap}
+.edu .line .where{color:var(--ink-2);min-width:0}
+.edu .line .gpa{color:var(--ink-3);white-space:nowrap;text-align:right}
+@media (max-width:900px){
+  .edu .line{grid-template-columns:1fr;gap:4px}
+  .edu .line .gpa{text-align:left}
+}
+.edu .note{font-family:var(--sans);color:var(--ink-3);font-size:15px;margin-top:18px;max-width:62ch;line-height:1.55}
+.edu .note::before{content:"// ";font-family:var(--mono);color:var(--ink-4);font-size:13px}
+
+/* PROJECTS */
+.projects{}
+.project{display:grid;grid-template-columns:64px 1fr auto;gap:24px;padding:22px 0;border-top:1px solid var(--line);align-items:baseline;text-decoration:none;color:inherit;transition:padding-left .25s cubic-bezier(.2,.7,.2,1)}
+.project:last-child{border-bottom:1px solid var(--line)}
+.project .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+.project .title{font-size:19px;color:var(--ink);transition:color .15s}
+.project .desc{color:var(--ink-3);font-size:14px;margin-top:5px;font-family:var(--sans);max-width:62ch}
+.project .meta{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em;text-align:right}
+.project .meta .tag{display:inline-block;padding:2px 7px;border:1px solid var(--line-2);border-radius:3px;margin-left:4px}
+.project:hover{padding-left:14px}
+.project:hover .title{color:var(--accent)}
+.project:hover .meta .tag{border-color:var(--accent);color:var(--accent)}
+.proj-empty{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding:14px 0 0;display:flex;gap:8px;align-items:center}
+.proj-empty .cur{display:inline-block;width:7px;height:13px;background:var(--accent);vertical-align:-2px;animation:blink 1.05s steps(2) infinite}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:180px 1fr;gap:14px 36px;align-items:baseline;max-width:760px}
+.contact-grid dt{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.16em;text-transform:uppercase;padding-top:6px}
+.contact-grid dd{margin:0;font-family:var(--mono);font-size:15px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.contact-grid dd a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:1px;transition:color .15s,border-color .15s}
+.contact-grid dd a:hover{color:var(--accent);border-color:var(--accent)}
+.copyable{cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--ink-3);font-size:11px;background:transparent;border:1px solid var(--line-2);padding:3px 8px;border-radius:3px;font-family:var(--mono);transition:color .15s,border-color .15s,background .15s}
+.copyable:hover{color:var(--ink);border-color:var(--ink-3)}
+.copyable.copied{color:var(--green);border-color:var(--green)}
+.contact-close{margin-top:48px;font-size:17px;color:var(--ink-2);max-width:62ch;line-height:1.6}
+.contact-close .em{color:var(--ink)}
+
+/* FOOTER */
+footer{padding:32px 64px;font-family:var(--mono);font-size:11px;color:var(--ink-3);display:flex;justify-content:space-between;border-top:1px solid var(--line);letter-spacing:.06em;max-width:var(--maxw);margin:0 auto;width:100%}
+footer a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
+footer a:hover{color:var(--accent);border-color:var(--accent)}
+
+/* HELP / SHORTCUTS */
+.help-btn{position:fixed;bottom:20px;right:20px;width:34px;height:34px;border-radius:50%;background:#141414;border:1px solid var(--line-2);color:var(--ink-2);cursor:pointer;font-family:var(--mono);font-size:14px;z-index:50;transition:color .15s,border-color .15s;display:grid;place-items:center}
+.help-btn:hover{color:var(--accent);border-color:var(--accent)}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(2px)}
+.scrim.open{display:flex}
+.modal{background:#101010;border:1px solid var(--line-2);padding:26px 30px;min-width:380px;max-width:480px;width:100%;font-family:var(--mono);font-size:13px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.modal h3{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.2em;text-transform:uppercase;margin:0 0 18px;font-weight:500}
+.modal .grow{display:grid;grid-template-columns:1fr auto;gap:8px 24px;padding:5px 0}
+.modal .lbl{color:var(--ink-2)}
+.kbd{display:inline-block;padding:2px 7px;background:#070707;border:1px solid var(--line-2);border-radius:3px;color:var(--ink);font-family:var(--mono);font-size:11px;margin-left:3px;min-width:18px;text-align:center}
+.modal .close{margin-top:20px;color:var(--ink-3);font-size:11px}
+.seq{position:fixed;bottom:64px;right:20px;font-family:var(--mono);font-size:11px;color:var(--accent);background:#101010;border:1px solid var(--line-2);padding:5px 11px;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;pointer-events:none;z-index:60;letter-spacing:.06em}
+.seq.show{opacity:1;transform:translateY(0)}
+
+/* responsive */
+@media (max-width:1080px){
+  main{padding:0 44px}
+  .metrics{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .rail{display:none}
+  main{padding:0 28px;max-width:100%}
+  .hero{grid-template-columns:1fr;gap:40px;padding-top:60px}
+  .term{display:none}
+  .term-mobile{display:block}
+  .about-grid .about-body,.about-grid .about-side{grid-column:1 / -1}
+  .about-side{margin-top:8px}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .metric{border-right:1px solid var(--line);border-bottom:1px solid var(--line)!important}
+  .metric:nth-child(2n){border-right:none}
+  .metric:last-child{border-bottom:none!important}
+  .skills-grid{grid-template-columns:1fr;gap:24px}
+  .contact-grid{grid-template-columns:1fr;gap:2px 0}
+  .contact-grid dt{padding-top:14px}
+  .contact-grid dd{margin-bottom:8px}
+  .project{grid-template-columns:40px 1fr}
+  .project .meta{grid-column:1 / -1;text-align:left;margin-top:6px}
+  footer{padding:24px 28px;flex-direction:column;gap:8px}
+  .now{max-width:none}
+}
+@media (max-width:480px){
+  .hero h1{font-size:34px}
+  section{padding:64px 0}
+  .metric .num{font-size:30px}
+  .commit .subject{padding-left:0}
+  .commit .body{padding-left:0}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important;scroll-behavior:auto!important}
+  .caret{opacity:1}
+  .pulse::after{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-label="Section navigation">
+    <div class="mono-mark" aria-hidden="true">SB</div>
+    <nav>
+      <a href="#about" data-nav="about">01</a>
+      <a href="#metrics" data-nav="metrics">02</a>
+      <a href="#experience" data-nav="experience">03</a>
+      <a href="#skills" data-nav="skills">04</a>
+      <a href="#education" data-nav="education">05</a>
+      <a href="#projects" data-nav="projects">06</a>
+      <a href="#contact" data-nav="contact">07</a>
+    </nav>
+    <div class="foot">SB / PORTFOLIO</div>
+  </aside>
+
+  <div>
+    <main>
+      <!-- HERO -->
+      <header class="hero" id="hero">
+        <div>
+          <div class="meta">
+            <span>Sujwal Boppana</span><span class="dot"></span>
+            <span>Hyderabad, IN</span><span class="dot"></span>
+            <span>v3.2024</span>
+          </div>
+          <h1>I build backend systems<br>that hold up <em>in production.</em></h1>
+          <p class="sub">Java · Spring Boot · Microservices · AI integration.<br><span class="mono">// banking, ai automation, freelance.</span></p>
+
+          <div class="status-row">
+            <span class="pulse" aria-hidden="true"></span>
+            <span>Available for freelance</span>
+            <span style="color:var(--ink-4)">·</span>
+            <a href="https://drive.google.com/file/d/1R2VyANcL0OQeYIZnKJgMd1sM8GxuZBWI/view" target="_blank" rel="noopener">resume.pdf →</a>
+          </div>
+
+          <section class="now" aria-label="Live status">
+            <div class="head">
+              <span>STATUS // NOW</span>
+              <span class="live"><span class="b"></span>LIVE</span>
+            </div>
+            <div class="body">
+              <div class="r"><span class="k">STATUS</span><span class="v ok" id="now-status">AVAILABLE</span></div>
+              <div class="r"><span class="k">LOCAL_TIME</span><span class="v" id="now-time">— IST</span></div>
+              <div class="r"><span class="k">LAST_DEPLOY</span><span class="v" id="now-deploy">today</span></div>
+              <div class="r"><span class="k">UPTIME</span><span class="v">3y · production</span></div>
+            </div>
+          </section>
+        </div>
+
+        <!-- terminal -->
+        <div>
+          <div class="term" id="term" role="application" aria-label="Interactive terminal">
+            <div class="term-head">
+              <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+              <span class="term-title">sujwal@portfolio:~ — zsh</span>
+            </div>
+            <div class="term-body" id="term-body" tabindex="0"></div>
+          </div>
+          <!-- mobile static fallback -->
+          <div class="term-mobile" aria-hidden="true">
+<div><span class="t-prompt">$</span> whoami</div>
+<div class="t-out">sujwal — backend engineer (java, spring boot)</div>
+<div><span class="t-prompt">$</span> uptime</div>
+<div class="t-out">3+ years in production</div>
+<div><span class="t-prompt">$</span> cat skills.json</div>
+<div class="t-out">{ "stack": ["Java","Spring Boot","Redis","AWS"], "focus": "scalability" }</div>
+<div><span class="t-prompt">$</span> <span class="t-dim">_</span></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ABOUT -->
+      <section id="about" data-screen-label="01 About">
+        <p class="sec-label"><span class="num">§ 01 —</span> About</p>
+        <div class="about-grid">
+          <div class="about-body">
+            <p>I'm a <span class="ink">Java Backend Engineer</span> working at Zerocode Innovations and GTMLY.ai. My work centers on reliable microservice architectures, secure REST APIs, and data-intensive backend workflows for enterprise applications — banking and AI-automation domains, mostly.</p>
+            <p>I also build AI-powered automation: OpenAI API integration, retrieval-augmented pipelines, prompt-driven backends. The goal is always practical impact — <span class="ink">faster delivery, better observability, higher operational confidence.</span></p>
+          </div>
+          <aside class="about-side" aria-label="Quick facts">
+            <div class="row"><span>ROLE</span><span class="v">Backend Eng.</span></div>
+            <div class="row"><span>BASED</span><span class="v">Hyderabad, IN</span></div>
+            <div class="row"><span>EXP</span><span class="v">3+ years</span></div>
+            <div class="row"><span>STACK</span><span class="v">JVM · Spring</span></div>
+            <div class="row"><span>STATUS</span><span class="v" style="color:var(--green)">open</span></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- METRICS -->
+      <section id="metrics" data-screen-label="02 Metrics">
+        <p class="sec-label"><span class="num">§ 02 —</span> Metrics</p>
+        <div class="metrics" id="metrics-grid">
+          <!-- 6 cards -->
+          <div class="metric">
+            <div class="top">
+              <div class="num"><span data-counter data-to="3" data-suffix="+">0</span></div>
+              <svg class="spark" viewBox="0 0 84 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.4" points="0,24 12,20 24,22 36,16 48,14 60,9 72,6 84,4" style="color:var(--accent)"/></svg>
+            </div>
+            <div class="label">Years in production</div>
+            <div class="delta"><span class="arrow">▲</span> compounding</div>
+          </div>
+          <div class="metric">
+            <div class="top">
+              <div class="num"><span data-counter data-to="30">0</span><span class="unit">%</span></div>
+              <svg class="spark" viewBox="0 0 84 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.4" points="0,6 12,8 24,12 36,11 48,16 60,18 72,22 84,24" style="color:var(--green)"/></svg>
+            </div>
+            <div class="label">API latency reduced</div>
+            <div class="delta down"><span class="arrow">▼</span> redis · query tuning</div>
+          </div>
+          <div class="metric">
+            <div class="top">
+              <div class="num"><span data-counter data-to="70">0</span><span class="unit">%</span></div>
+              <svg class="spark" viewBox="0 0 84 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.4" points="0,4 8,7 16,6 24,18 32,16 40,22 52,20 64,25 76,26 84,27" style="color:var(--green)"/></svg>
+            </div>
+            <div class="label">Downtime reduced</div>
+            <div class="delta down"><span class="arrow">▼</span> health checks + restart</div>
+          </div>
+          <div class="metric">
+            <div class="top">
+              <div class="num"><span data-counter data-to="25">0</span><span class="unit">%</span></div>
+              <svg class="spark" viewBox="0 0 84 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.4" points="0,22 12,21 24,18 36,14 48,15 60,11 72,8 84,7" style="color:var(--accent)"/></svg>
+            </div>
+            <div class="label">Ops efficiency gain</div>
+            <div class="delta"><span class="arrow">▲</span> banking migration → java</div>
+          </div>
+          <div class="metric">
+            <div class="top">
+              <div class="num"><span data-counter data-to="40">0</span><span class="unit">%</span></div>
+              <svg class="spark" viewBox="0 0 84 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.4" points="0,20 10,18 22,14 34,16 46,10 58,12 70,6 84,3" style="color:var(--accent)"/></svg>
+            </div>
+            <div class="label">Observability up</div>
+            <div class="delta"><span class="arrow">▲</span> centralized logging</div>
+          </div>
+          <div class="metric">
+            <div class="top">
+              <div class="num"><span data-counter data-to="35">0</span><span class="unit">%</span></div>
+              <svg class="spark" viewBox="0 0 84 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.4" points="0,5 12,8 24,11 36,15 48,17 60,20 72,23 84,25" style="color:var(--green)"/></svg>
+            </div>
+            <div class="label">Error rate reduced</div>
+            <div class="delta down"><span class="arrow">▼</span> root-cause analysis</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="experience" data-screen-label="03 Experience">
+        <p class="sec-label"><span class="num">§ 03 —</span> Experience &nbsp; <span style="color:var(--ink-4)">// git log --oneline --reverse</span></p>
+        <div class="gitlog">
+
+          <article class="commit">
+            <div class="hashline"><span class="hash">commit a7f3c2e</span> <span class="branch">(<span class="paren">HEAD →</span> main, <span class="paren">tag:</span> v2.programmer)</span> <span class="when">May 2024 → Present</span></div>
+            <div class="author">Author: <span class="em">Sujwal Boppana &lt;sujwalboppana2000@gmail.com&gt;</span></div>
+            <div class="author">Where: &nbsp;Zerocode Innovations Pvt Ltd · GTMLY.ai · Hyderabad</div>
+            <div class="subject">Promoted to <span class="scope">Programmer</span> — owning AI automation + microservice platform</div>
+            <div class="body">
+              <div class="b">led a cross-functional team of 5+ engineers delivering AI-powered automation<span class="detail">// OpenAI APIs · retrieval-augmented generation · production rollout</span></div>
+              <div class="b">architected Spring Boot microservices — cut API latency by 30%<span class="detail">// redis caching · query optimization · connection pooling</span></div>
+              <div class="b">built scalable REST APIs with versioning + robust error handling<span class="detail">// idempotency keys · structured error envelopes · HA cloud deploys</span></div>
+              <div class="b">integrated WhatsApp, Firebase, SMS, and email channels<span class="detail">// unified notification dispatcher · retry + dead-letter queues</span></div>
+              <div class="b">shipped access logging + production monitoring → observability up 40%<span class="detail">// correlation IDs · structured JSON logs · request tracing</span></div>
+              <div class="b">used AI-assisted, prompt-driven development to accelerate prototyping<span class="detail">// faster spike → review → ship loop, while keeping a human in the loop</span></div>
+            </div>
+          </article>
+
+          <article class="commit">
+            <div class="hashline"><span class="hash">commit 1e4b9d0</span> <span class="branch">(<span class="paren">tag:</span> v1.trainee)</span> <span class="when">Nov 2022 → May 2024</span></div>
+            <div class="author">Author: <span class="em">Sujwal Boppana &lt;sujwalboppana2000@gmail.com&gt;</span></div>
+            <div class="author">Where: &nbsp;Zerocode Innovations Pvt Ltd · Hyderabad</div>
+            <div class="subject"><span class="scope">Software Engineer Trainee</span> — banking platform migration + reliability</div>
+            <div class="body">
+              <div class="b">migrated a critical banking application to a Java backend, zero data loss<span class="detail">// dual-write cutover · reconciliation jobs · operational efficiency +25%</span></div>
+              <div class="b">designed centralized logging + tracing — debugging time −40%, MTTR −30%<span class="detail">// structured logs across services · request correlation · incident playbooks</span></div>
+              <div class="b">mentored 3+ junior developers on Spring Boot and microservice patterns<span class="detail">// code reviews · pairing sessions · internal docs on conventions</span></div>
+              <div class="b">implemented automated health checks + restart mechanisms — downtime −70%<span class="detail">// liveness/readiness probes · auto-recovery · alert routing</span></div>
+              <div class="b">delivered 20+ backend features through agile iterations — error rate −35%<span class="detail">// short cycles · feature flags · rigorous test coverage</span></div>
+              <div class="b">executed JMeter-based performance testing to identify bottlenecks<span class="detail">// load profiles · p95/p99 budgets · DB and pool tuning</span></div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills" data-screen-label="04 Skills">
+        <p class="sec-label"><span class="num">§ 04 —</span> Skills &nbsp; <span style="color:var(--ink-4)">// hover any chip to focus its cluster</span></p>
+        <div class="skills-grid" id="skills-grid">
+
+          <div class="cluster" data-cat="lang">
+            <p class="cat"><span class="cnum">/01</span> Languages & Frameworks</p>
+            <div class="chips">
+              <span class="chip" data-cat="lang">Java</span>
+              <span class="chip" data-cat="lang">SQL</span>
+              <span class="chip" data-cat="lang">Python</span>
+              <span class="chip" data-cat="lang">Spring Boot</span>
+              <span class="chip" data-cat="lang">Spring MVC</span>
+              <span class="chip" data-cat="lang">Hibernate</span>
+              <span class="chip" data-cat="lang">JPA</span>
+              <span class="chip" data-cat="lang">Microservices</span>
+            </div>
+          </div>
+
+          <div class="cluster" data-cat="db">
+            <p class="cat"><span class="cnum">/02</span> Databases & Caching</p>
+            <div class="chips">
+              <span class="chip" data-cat="db">MySQL</span>
+              <span class="chip" data-cat="db">MS SQL Server</span>
+              <span class="chip" data-cat="db">MongoDB</span>
+              <span class="chip" data-cat="db">Redis</span>
+              <span class="chip" data-cat="db">Indexing</span>
+              <span class="chip" data-cat="db">Query Tuning</span>
+              <span class="chip" data-cat="db">Connection Pooling</span>
+            </div>
+          </div>
+
+          <div class="cluster" data-cat="cloud">
+            <p class="cat"><span class="cnum">/03</span> Cloud & DevOps</p>
+            <div class="chips">
+              <span class="chip" data-cat="cloud">AWS</span>
+              <span class="chip" data-cat="cloud">Docker</span>
+              <span class="chip" data-cat="cloud">Linux</span>
+              <span class="chip" data-cat="cloud">Git</span>
+              <span class="chip" data-cat="cloud">CI/CD</span>
+              <span class="chip" data-cat="cloud">Maven</span>
+            </div>
+          </div>
+
+          <div class="cluster" data-cat="test">
+            <p class="cat"><span class="cnum">/04</span> Testing & Quality</p>
+            <div class="chips">
+              <span class="chip" data-cat="test">JUnit</span>
+              <span class="chip" data-cat="test">Mockito</span>
+              <span class="chip" data-cat="test">Postman</span>
+              <span class="chip" data-cat="test">JMeter</span>
+              <span class="chip" data-cat="test">Performance Testing</span>
+              <span class="chip" data-cat="test">RCA</span>
+            </div>
+          </div>
+
+          <div class="cluster" data-cat="ai">
+            <p class="cat"><span class="cnum">/05</span> AI & Automation</p>
+            <div class="chips">
+              <span class="chip" data-cat="ai">OpenAI API</span>
+              <span class="chip" data-cat="ai">RAG Pipelines</span>
+              <span class="chip" data-cat="ai">Prompt Engineering</span>
+              <span class="chip" data-cat="ai">AI-Assisted Dev</span>
+              <span class="chip" data-cat="ai">Workflow Automation</span>
+            </div>
+          </div>
+
+          <div class="cluster" data-cat="sec">
+            <p class="cat"><span class="cnum">/06</span> Security & Architecture</p>
+            <div class="chips">
+              <span class="chip" data-cat="sec">JWT Auth</span>
+              <span class="chip" data-cat="sec">RBAC</span>
+              <span class="chip" data-cat="sec">Secure Data Handling</span>
+              <span class="chip" data-cat="sec">REST API Design</span>
+              <span class="chip" data-cat="sec">System Design</span>
+              <span class="chip" data-cat="sec">Scalability</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section id="education" data-screen-label="05 Education">
+        <p class="sec-label"><span class="num">§ 05 —</span> Education</p>
+        <div class="edu">
+          <div class="line">
+            <span class="yr">2018 — 2022</span>
+            <span class="deg">B.Tech, Mechanical Engineering</span>
+            <span class="where">— V.K.R., V.N.B. &amp; A.G.K. College of Engineering, Gudivada</span>
+            <span class="gpa">GPA 7.92 / 10</span>
+          </div>
+          <p class="note">Mechanical engineering taught me systems thinking. That same instinct now shapes how I design backend architecture.</p>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects" data-screen-label="06 Projects">
+        <p class="sec-label"><span class="num">§ 06 —</span> Projects</p>
+        <div class="projects" id="projects-list">
+          <a class="project" href="https://github.com/SujwalBoppana" target="_blank" rel="noopener">
+            <div class="idx">01 ↗</div>
+            <div>
+              <div class="title">Personal Portfolio Website</div>
+              <div class="desc">This site. Single-file HTML, hand-written CSS, zero build step. Hosted on GitHub Pages. Live terminal hero, observability-style metrics, git-log experience timeline, keyboard shortcuts.</div>
+            </div>
+            <div class="meta">2025 <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          </a>
+        </div>
+        <div class="proj-empty"><span class="cur"></span> more case studies in progress · check back soon</div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" data-screen-label="07 Contact">
+        <p class="sec-label"><span class="num">§ 07 —</span> Contact</p>
+        <dl class="contact-grid">
+          <dt>EMAIL</dt>
+          <dd>
+            <a href="mailto:sujwalboppana2000@gmail.com">sujwalboppana2000@gmail.com</a>
+            <button class="copyable" data-copy="sujwalboppana2000@gmail.com" aria-label="Copy email">
+              <span class="lbl">copy</span>
+            </button>
+          </dd>
+
+          <dt>PHONE</dt>
+          <dd>
+            <a href="tel:+916309638199">+91 6309638199</a>
+            <button class="copyable" data-copy="+916309638199" aria-label="Copy phone">
+              <span class="lbl">copy</span>
+            </button>
+          </dd>
+
+          <dt>LOCATION</dt>
+          <dd><span style="color:var(--ink)">Hyderabad, Telangana · India</span></dd>
+
+          <dt>LINKEDIN</dt>
+          <dd><a href="https://linkedin.com/in/sujwalboppana" target="_blank" rel="noopener">linkedin.com/in/sujwalboppana ↗</a></dd>
+
+          <dt>GITHUB</dt>
+          <dd><a href="https://github.com/SujwalBoppana" target="_blank" rel="noopener">github.com/SujwalBoppana ↗</a></dd>
+
+          <dt>RESUME</dt>
+          <dd><a href="https://drive.google.com/file/d/1R2VyANcL0OQeYIZnKJgMd1sM8GxuZBWI/view" target="_blank" rel="noopener">resume.pdf ↗</a></dd>
+        </dl>
+
+        <p class="contact-close">Open to <span class="em">full-time and freelance roles</span> in Java, cloud-native architecture, and AI-integrated platforms.</p>
+      </section>
+    </main>
+
+    <footer>
+      <div>built in hyderabad · <span id="year">2025</span></div>
+      <div><a href="https://github.com/SujwalBoppana" target="_blank" rel="noopener">view source ↗</a></div>
+    </footer>
+  </div>
+</div>
+
+<button class="help-btn" id="help-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (press ?)">?</button>
+<div class="scrim" id="scrim" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <h3>Keyboard shortcuts</h3>
+    <div class="grow"><span class="lbl">Hero / top</span><span><span class="kbd">g</span> <span class="kbd">h</span></span></div>
+    <div class="grow"><span class="lbl">About</span><span><span class="kbd">g</span> <span class="kbd">a</span></span></div>
+    <div class="grow"><span class="lbl">Metrics</span><span><span class="kbd">g</span> <span class="kbd">m</span></span></div>
+    <div class="grow"><span class="lbl">Experience</span><span><span class="kbd">g</span> <span class="kbd">e</span></span></div>
+    <div class="grow"><span class="lbl">Skills</span><span><span class="kbd">g</span> <span class="kbd">s</span></span></div>
+    <div class="grow"><span class="lbl">Projects</span><span><span class="kbd">g</span> <span class="kbd">p</span></span></div>
+    <div class="grow"><span class="lbl">Contact</span><span><span class="kbd">g</span> <span class="kbd">c</span></span></div>
+    <div class="grow"><span class="lbl">Focus terminal</span><span><span class="kbd">/</span></span></div>
+    <div class="grow"><span class="lbl">This dialog</span><span><span class="kbd">?</span></span></div>
+    <div class="grow"><span class="lbl">Close</span><span><span class="kbd">Esc</span></span></div>
+    <div class="close">// click anywhere outside to dismiss</div>
+  </div>
+</div>
+<div class="seq" id="seq"></div>
+
+<script>
+(function(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- year + deploy date ----------
+  const now = new Date();
+  document.getElementById('year').textContent = now.getFullYear();
+
+  // ---------- live IST clock ----------
+  function tickClock(){
+    const fmt = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:'Asia/Kolkata'});
+    document.getElementById('now-time').textContent = fmt.format(new Date()) + ' IST';
+  }
+  tickClock(); setInterval(tickClock, 1000);
+
+  // last deploy = today, computed
+  document.getElementById('now-deploy').textContent = now.toISOString().slice(0,10);
+
+  // ---------- TERMINAL ----------
+  const termBody = document.getElementById('term-body');
+  const COMMANDS = {
+    help:        ()=>printBlock([
+      ['t-dim','available commands:'],
+      ['t-out','  help        — list commands'],
+      ['t-out','  about       — short bio'],
+      ['t-out','  skills      — tech stack'],
+      ['t-out','  experience  — roles'],
+      ['t-out','  projects    — projects + links'],
+      ['t-out','  contact     — email, phone, links'],
+      ['t-out','  resume      — opens resume in new tab'],
+      ['t-out','  clear       — clear the screen'],
+      ['t-dim','tip: try `cat skills.json`'],
+    ]),
+    about: ()=>printBlock([
+      ['t-out','Sujwal Boppana — Java Backend Engineer.'],
+      ['t-out','Hyderabad, IN. 3+ years in production.'],
+      ['t-out','Microservices, REST APIs, AI integration.'],
+    ]),
+    skills: ()=>printBlock([
+      ['t-key','languages   ','','Java · SQL · Python'],
+      ['t-key','frameworks  ','','Spring Boot · Spring MVC · Hibernate · JPA'],
+      ['t-key','data        ','','MySQL · MS SQL · MongoDB · Redis'],
+      ['t-key','cloud       ','','AWS · Docker · Linux · CI/CD · Maven'],
+      ['t-key','testing     ','','JUnit · Mockito · Postman · JMeter'],
+      ['t-key','ai          ','','OpenAI · RAG · Prompt Eng.'],
+      ['t-key','security    ','','JWT · RBAC · System Design'],
+    ], true),
+    experience: ()=>printBlock([
+      ['t-warn','● May 2024 → Present'],
+      ['t-out','  Programmer · Zerocode Innovations + GTMLY.ai'],
+      ['t-out','  led 5+ engineers · API latency -30% · observability +40%'],
+      ['t-warn','● Nov 2022 → May 2024'],
+      ['t-out','  Software Engineer Trainee · Zerocode Innovations'],
+      ['t-out','  banking migration · downtime -70% · error rate -35%'],
+    ]),
+    projects: ()=>printBlock([
+      ['t-out','[01] Personal Portfolio Website — single-file HTML/CSS/JS'],
+      ['t-dim','     github.com/SujwalBoppana'],
+      ['t-dim','more case studies in progress.'],
+    ]),
+    contact: ()=>printBlock([
+      ['t-key','email    ','','sujwalboppana2000@gmail.com'],
+      ['t-key','phone    ','','+91 6309638199'],
+      ['t-key','linkedin ','','linkedin.com/in/sujwalboppana'],
+      ['t-key','github   ','','github.com/SujwalBoppana'],
+      ['t-key','location ','','Hyderabad, IN'],
+    ], true),
+    resume: ()=>{
+      printBlock([['t-out','opening resume.pdf …']]);
+      window.open('https://drive.google.com/file/d/1R2VyANcL0OQeYIZnKJgMd1sM8GxuZBWI/view','_blank','noopener');
+    },
+    clear: ()=>{ termBody.innerHTML=''; mountInput(); },
+    whoami: ()=>printBlock([['t-out','sujwal — backend engineer (java, spring boot)']]),
+    uptime: ()=>printBlock([['t-out','3+ years in production']]),
+    ls:     ()=>printBlock([['t-out','about.md  skills.json  experience.log  projects/  contact.txt  resume.pdf']]),
+    pwd:    ()=>printBlock([['t-out','/home/sujwal']]),
+    date:   ()=>printBlock([['t-out', new Date().toString()]]),
+    'cat skills.json': ()=>printBlock([
+      ['t-out','{'],
+      ['t-out','  "stack": ["Java","Spring Boot","Redis","AWS"],'],
+      ['t-out','  "focus": "scalability"'],
+      ['t-out','}'],
+    ]),
+    'cat about.md':   ()=>COMMANDS.about(),
+    'cat contact.txt':()=>COMMANDS.contact(),
+  };
+
+  function makeLine(cls, text){
+    const d=document.createElement('div');
+    d.className='term-line';
+    if(cls) {
+      const s=document.createElement('span');
+      s.className=cls; s.textContent=text;
+      d.appendChild(s);
+    } else {
+      d.textContent=text;
+    }
+    return d;
+  }
+  function makePromptEcho(cmd){
+    const d=document.createElement('div');
+    d.className='term-line';
+    d.innerHTML='<span class="t-prompt">$</span> <span class="t-user"></span>';
+    d.querySelector('.t-user').textContent = cmd;
+    return d;
+  }
+  function printBlock(rows, kv){
+    rows.forEach(r=>{
+      if(kv){
+        const d=document.createElement('div');
+        d.className='term-line';
+        d.innerHTML = `<span class="${r[0]}">${escapeHtml(r[1])}</span><span class="t-out">${escapeHtml(r[3]||'')}</span>`;
+        termBody.appendChild(d);
+      } else {
+        termBody.appendChild(makeLine(r[0], r[1]));
+      }
+    });
+  }
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function scrollEnd(){ termBody.scrollTop = termBody.scrollHeight; }
+
+  // typed intro
+  const intro = [
+    {prompt:'whoami',    out:[['t-out','sujwal — backend engineer (java, spring boot)']]},
+    {prompt:'uptime',    out:[['t-out','3+ years in production']]},
+    {prompt:'cat skills.json', out:[
+      ['t-out','{ "stack": ["Java", "Spring Boot", "Redis", "AWS"], "focus": "scalability" }'],
+    ]},
+  ];
+
+  let inputEl = null;
+  function mountInput(){
+    if(inputEl && inputEl.parentNode) inputEl.parentNode.remove();
+    const line = document.createElement('div');
+    line.className='term-line t-inline';
+    line.innerHTML = '<span class="t-prompt">$</span>';
+    const input = document.createElement('input');
+    input.type='text'; input.spellcheck=false; input.autocapitalize='off'; input.autocomplete='off';
+    input.setAttribute('aria-label','terminal command');
+    input.className='t-input';
+    line.appendChild(input);
+    const caret = document.createElement('span'); caret.className='caret';
+    line.appendChild(caret);
+    termBody.appendChild(line);
+    inputEl = input;
+
+    // hide caret while typing; show when empty/blurred
+    input.addEventListener('input', ()=>{ caret.style.display = input.value ? 'none' : 'inline-block'; });
+
+    input.addEventListener('keydown', e=>{
+      if(e.key==='Enter'){
+        const cmd = input.value.trim();
+        const echo = makePromptEcho(cmd);
+        line.parentNode.insertBefore(echo, line);
+        runCommand(cmd);
+        input.value=''; caret.style.display='inline-block';
+        scrollEnd();
+      } else if(e.key==='ArrowUp'){
+        if(history.length){ input.value = history[Math.max(0, history.length-1-(histIdx++))] || ''; e.preventDefault(); }
+      } else if(e.key==='ArrowDown'){
+        histIdx = Math.max(-1, histIdx-1);
+        input.value = histIdx<0 ? '' : (history[history.length-1-histIdx] || '');
+        e.preventDefault();
+      }
+    });
+
+    setTimeout(()=>{ try{ input.focus({preventScroll:true}); }catch(_){ input.focus(); } }, 50);
+    scrollEnd();
+  }
+
+  const history = []; let histIdx = -1;
+  function runCommand(raw){
+    if(!raw) return;
+    history.push(raw); histIdx = -1;
+    const cmd = raw.toLowerCase();
+    if(COMMANDS[cmd]){ COMMANDS[cmd](); }
+    else if(cmd==='ls -a' || cmd==='ls -la'){ COMMANDS.ls(); }
+    else if(cmd.startsWith('echo ')){ printBlock([['t-out', raw.slice(5)]]); }
+    else if(cmd==='sudo'){ printBlock([['t-err','nice try.']]); }
+    else { printBlock([['t-err',`command not found: ${raw} — try 'help'`]]); }
+  }
+
+  function typeIntro(){
+    if(reduceMotion){
+      // dump synchronously
+      intro.forEach(step=>{
+        termBody.appendChild(makePromptEcho(step.prompt));
+        step.out.forEach(o=> termBody.appendChild(makeLine(o[0], o[1])));
+      });
+      mountInput();
+      return;
+    }
+    let i=0;
+    function nextStep(){
+      if(i>=intro.length){ mountInput(); return; }
+      const step = intro[i++];
+      const line = document.createElement('div');
+      line.className='term-line';
+      line.innerHTML = '<span class="t-prompt">$</span> <span class="typed"></span><span class="caret"></span>';
+      termBody.appendChild(line);
+      const target = line.querySelector('.typed');
+      const caret = line.querySelector('.caret');
+      const text = step.prompt;
+      let p=0;
+      function tick(){
+        target.textContent = text.slice(0, ++p);
+        scrollEnd();
+        if(p<text.length){ setTimeout(tick, 36 + Math.random()*40); }
+        else {
+          // remove caret on this line, print output, pause, next
+          caret.remove();
+          step.out.forEach(o=> termBody.appendChild(makeLine(o[0], o[1])));
+          scrollEnd();
+          setTimeout(nextStep, 420);
+        }
+      }
+      setTimeout(tick, 220);
+    }
+    setTimeout(nextStep, 380);
+  }
+
+  // start terminal
+  typeIntro();
+
+  // click anywhere in term -> focus input
+  termBody.addEventListener('click', ()=>{ if(inputEl) inputEl.focus(); });
+
+  // ---------- METRICS counters ----------
+  const counters = document.querySelectorAll('[data-counter]');
+  function animateCount(el){
+    const to = parseInt(el.dataset.to,10);
+    const suffix = el.dataset.suffix || '';
+    if(reduceMotion){ el.textContent = to + suffix; return; }
+    const dur = 1100; const start = performance.now();
+    function frame(t){
+      const p = Math.min(1, (t-start)/dur);
+      const eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(to*eased) + suffix;
+      if(p<1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  const metricsIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ animateCount(e.target); metricsIO.unobserve(e.target); }
+    });
+  }, {threshold:0.5});
+  counters.forEach(c=> metricsIO.observe(c));
+
+  // ---------- section in-view: label underline ----------
+  const sections = document.querySelectorAll('section');
+  const labelIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in-view'); });
+  }, {threshold:0.18});
+  sections.forEach(s=> labelIO.observe(s));
+
+  // ---------- left rail: active link ----------
+  const navLinks = document.querySelectorAll('.rail nav a');
+  const navIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id = e.target.id;
+        navLinks.forEach(a=> a.classList.toggle('is-active', a.dataset.nav===id));
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+  document.querySelectorAll('section[id]').forEach(s=> navIO.observe(s));
+
+  // ---------- skills focus ----------
+  const skillsGrid = document.getElementById('skills-grid');
+  skillsGrid.addEventListener('mouseover', e=>{
+    const chip = e.target.closest('.chip'); if(!chip) return;
+    const cat = chip.dataset.cat;
+    skillsGrid.classList.add('is-focusing');
+    skillsGrid.querySelectorAll('.chip').forEach(c=>{
+      c.classList.toggle('is-focus', c.dataset.cat===cat);
+    });
+  });
+  skillsGrid.addEventListener('mouseleave', ()=>{
+    skillsGrid.classList.remove('is-focusing');
+    skillsGrid.querySelectorAll('.chip').forEach(c=> c.classList.remove('is-focus'));
+  });
+
+  // ---------- copy to clipboard ----------
+  document.querySelectorAll('.copyable').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const text = btn.dataset.copy;
+      try { await navigator.clipboard.writeText(text); }
+      catch(_){
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); try{document.execCommand('copy');}catch(__){}
+        ta.remove();
+      }
+      const lbl = btn.querySelector('.lbl');
+      const prev = lbl.textContent;
+      lbl.textContent = '✓ copied';
+      btn.classList.add('copied');
+      setTimeout(()=>{ lbl.textContent = prev; btn.classList.remove('copied'); }, 1400);
+    });
+  });
+
+  // ---------- keyboard shortcuts ----------
+  const targets = { h:'hero', a:'about', m:'metrics', e:'experience', s:'skills', p:'projects', c:'contact', d:'education' };
+  const scrim = document.getElementById('scrim');
+  const helpBtn = document.getElementById('help-btn');
+  const seq = document.getElementById('seq');
+  let gMode = false; let gTimer = null;
+
+  function openHelp(){ scrim.classList.add('open'); scrim.setAttribute('aria-hidden','false'); }
+  function closeHelp(){ scrim.classList.remove('open'); scrim.setAttribute('aria-hidden','true'); }
+  helpBtn.addEventListener('click', openHelp);
+  scrim.addEventListener('click', e=>{ if(e.target===scrim) closeHelp(); });
+
+  function flash(text){
+    seq.textContent = text;
+    seq.classList.add('show');
+    clearTimeout(seq._t);
+    seq._t = setTimeout(()=> seq.classList.remove('show'), 900);
+  }
+
+  document.addEventListener('keydown', e=>{
+    // ignore when typing in inputs/textareas
+    const tag = (e.target && e.target.tagName) || '';
+    const inField = tag==='INPUT' || tag==='TEXTAREA' || e.target.isContentEditable;
+
+    if(e.key==='Escape'){ if(scrim.classList.contains('open')) closeHelp(); return; }
+
+    if(!inField){
+      if(e.key==='?' || (e.shiftKey && e.key==='/')){ e.preventDefault(); scrim.classList.contains('open')?closeHelp():openHelp(); return; }
+      if(e.key==='/'){ // focus terminal
+        e.preventDefault();
+        if(inputEl){ inputEl.focus(); }
+        return;
+      }
+      if(e.key==='g' && !e.metaKey && !e.ctrlKey && !e.altKey){
+        gMode = true; flash('g _');
+        clearTimeout(gTimer);
+        gTimer = setTimeout(()=>{ gMode=false; seq.classList.remove('show'); }, 900);
+        return;
+      }
+      if(gMode){
+        const k = e.key.toLowerCase();
+        if(targets[k]){
+          gMode = false; clearTimeout(gTimer);
+          flash('→ § ' + targets[k]);
+          const el = document.getElementById(targets[k]);
+          if(el){
+            const y = el.getBoundingClientRect().top + window.pageYOffset - 12;
+            window.scrollTo({top: y, behavior: reduceMotion?'auto':'smooth'});
+          }
+          setTimeout(()=> seq.classList.remove('show'), 700);
+          return;
+        }
+      }
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
